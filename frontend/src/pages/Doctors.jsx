@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 const Doctors = () => {
   const { speciality } = useParams()
   const [filteredDoctors, setFilteredDoctors] = useState([]);
+  const [showfilter, setShowFilter] = useState(false);
   const navigate = useNavigate();
 
   const { doctors } = useContext(AppContext)
@@ -28,7 +29,8 @@ const Doctors = () => {
     <div>
       <p className='text-grey-600'>Browse though the Doctor Specialists</p>
       <div className='flex flex-col items-start sm:flex-row gap-5 mt-5'>
-        <div className='flex flex-col gap-2 text-sm text-grey-900'>
+        <button onClick={() => setShowFilter(prev => !prev)} className={`border transition-all sm:hidden text-sm py-1 px-3 rounded ${showfilter ? "bg-green-100 text-black" : ""}`}>Filter</button>
+        <div className={`flex flex-col gap-2 text-sm text-grey-900 ${showfilter ? "flex" : "hidden sm:flex"}`}>
           <p onClick={() => speciality === 'General physician' ? navigate('/doctors') : navigate('/doctors/General physician')} className={`w-[94vw] sm:w-auto pl-3 py-1.5 pr-16 border border-grey-300 rounded transition-all cursor-pointer ${speciality === "General physician" ? "bg-green-100 text-black" : ""}`}>General Physician</p>
           <p onClick={() => speciality === 'Gynecologist' ? navigate('/doctors') : navigate('/doctors/Gynecologist')} className={`w-[94vw] sm:w-auto pl-3 py-1.5 pr-16 border border-grey-300 rounded transition-all cursor-pointer ${speciality === "Gynecologist" ? "bg-green-100 text-black" : ""}`}>Gynecologist</p>
           <p onClick={() => speciality === 'Dermatologist' ? navigate('/doctors') : navigate('/doctors/Dermatologist')} className={`w-[94vw] sm:w-auto pl-3 py-1.5 pr-16 border border-grey-300 rounded transition-all cursor-pointer ${speciality === "Dermatologist" ? "bg-green-100 text-black" : ""}`}>Dermatologist</p>

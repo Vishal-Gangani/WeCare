@@ -3,12 +3,12 @@ import { assets } from '../assets/assets_frontend/assets.js';
 
 const Footer = () => {
     return (
-        <div className="py-10 px-4 mt-10 bg-white border-gray-200">
-            <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
+        <div className="py-10 px-2 sm:px-4 mt-10 bg-white border-gray-200">
+            <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-10">
                 
                 {/* Column 1: Logo and tagline (takes 2 columns) */}
-                <div className="md:col-span-2 flex flex-col items-start space-y-2">
-                    <img src={assets.logo} alt="WeCare Logo" className="w-32 mb-2" />
+                <div className="md:col-span-2 flex flex-col items-start mb-4 md:mb-0 space-y-2">
+                    <img src={assets.logo} alt="WeCare Logo" className="w-28 sm:w-32 mb-2" />
                     <p className="text-gray-700 text-sm leading-relaxed">
                         Your trusted healthcare companion. Book appointments with top doctors anytime, anywhere.
                         WeCare is dedicated to simplifying healthcare access by connecting patients with certified professionals and providing tools for seamless care management.
@@ -16,7 +16,7 @@ const Footer = () => {
                 </div>
 
                 {/* Column 2: Company info */}
-                <div className="flex flex-col items-start space-y-2 pl-10">
+                <div className="flex flex-col items-start mb-4 md:mb-0 space-y-2 pl-0 md:pl-10">
                     <p className="font-semibold text-gray-800">Company</p>
                     <ul className="text-gray-600 text-sm space-y-1 pt-2">
                         <li className="hover:text-green-600 cursor-pointer">Home</li>
@@ -27,7 +27,7 @@ const Footer = () => {
                 </div>
 
                 {/* Column 3: Contact info */}
-                <div className="flex flex-col items-start space-y-2">
+                <div className="flex flex-col items-start mb-4 md:mb-0 space-y-2">
                     <p className="font-semibold text-gray-800">Get in Touch</p>
                     <ul className="text-gray-600 text-sm space-y-1">
                         <li>📞 +1 234 567 890</li>

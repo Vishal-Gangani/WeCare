@@ -23,37 +23,39 @@ const Appointment = () => {
   }
 
   const getAvailableSlots = async () => {
-    setDocSlots([])
-
+    let slotsArr = [];
     let today = new Date();
     for (let i = 0; i < 7; i++) {
       let currentDate = new Date(today);
       currentDate.setDate(today.getDate() + i);
 
-      let endTime = new Date();
-      endTime.setDate(currentDate.getDate() + i);
+      let endTime = new Date(currentDate);
       endTime.setHours(21, 0, 0, 0);
 
-      if (today.getDate() === currentDate.getDate()) {
-        currentDate.setHours(today.getHours() > 10 ? today.getHours() + 1 : 10);
-        currentDate.setMinutes(currentDate.getMinutes() > 30 ? 30 : 0);
-      }
-      else {
-        currentDate.setHours(10);
-        currentDate.setMinutes(0);
+      if (i === 0) {
+        // For today, start at least 1 hour from now, rounded up to next 30-min mark, but not before 10:00
+        let now = new Date();
+        let minStart = new Date(now.getTime() + 60 * 60 * 1000);
+        minStart.setSeconds(0, 0);
+        let minutes = minStart.getMinutes();
+        minStart.setMinutes(minutes < 30 ? 30 : 0);
+        if (minStart.getHours() < 10) {
+          minStart.setHours(10, 0, 0, 0);
+        }
+        currentDate = minStart;
+      } else {
+        currentDate.setHours(10, 0, 0, 0);
       }
 
       let timeslots = [];
-
       while (currentDate < endTime) {
         let formattedTime = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
         timeslots.push({ datetime: new Date(currentDate), time: formattedTime });
-
         currentDate.setMinutes(currentDate.getMinutes() + 30);
       }
-      setDocSlots(prev => [...prev, timeslots]);
+      slotsArr.push(timeslots);
     }
+    setDocSlots(slotsArr);
   }
 
   useEffect(() => {
@@ -104,7 +106,7 @@ const Appointment = () => {
         </div>
         <div className='flex items-center gap-3 w-full overflow-x-scroll mt-4'>
           {
-            docSlots.length && docSlots[slotIndex].map((slot, index) => (
+            docSlots.length && docSlots[slotIndex] && docSlots[slotIndex].map((slot, index) => (
               <p onClick={()=> setSlotTime(slot.time)} className={`text-sm font-light flex-shrink-0 px-5 py-2 rounded-full cursor-pointer ${slot.time === slotTime ? 'bg-primary text-white' : 'bg-gray-100 text-gray-600 border border-gray'}`} key={index}>{slot.time}</p>
             ))
           }
