@@ -8,7 +8,10 @@ const MyProfile = () => {
     image: assets.profile_pic,
     phone: '123-456-7890',
     email: 'example@example.com',
-    address: '123 Main St, Cityville, ST 12345',
+    address: {
+      line1: '123 Main St',
+      line2: 'Cityville, ST 12345'
+    },
     dob: '1990-01-01',
     gender: 'Male'
   });
@@ -58,14 +61,24 @@ const MyProfile = () => {
           <p className="font-medium">Address:</p>
           {
             isEdit ? (
-              <input
-                className="border border-gray-300 bg-gray-50 rounded-md px-2 py-1 w-full"
-                type="text"
-                value={userData.address}
-                onChange={(e) => setUserData(prev => ({ ...prev, address: e.target.value }))}
-              />
+              <p>
+                <input type='text'
+                  className='bg-gray-50 border border-gray-300 rounded-md px-2 py-1 w-full' 
+                  value={userData.address.line1}
+                  onChange={(e) => setUserData(prev => ({ ...prev, address: { ...prev.address, line1: e.target.value } }))}
+                />
+                <br />
+                <input type='text'
+                  className='bg-gray-50 border border-gray-300 rounded-md px-2 py-1 w-full' 
+                  value={userData.address.line2}
+                  onChange={(e) => setUserData(prev => ({ ...prev, address: { ...prev.address, line2: e.target.value } }))}
+                />
+              </p>
             ) : (
-              <p className="text-gray-600">{userData.address}</p>
+              <p className='text-gray-500'>
+                {userData.address.line1}<br />
+                {userData.address.line2}
+              </p>
             )
           }
         </div>
