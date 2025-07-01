@@ -80,4 +80,15 @@ const loginAdmin = async (req, res) => {
     }
 }
 
-export { addDoctor, loginAdmin };
+//api to get all doctors
+const allDoctors = async (req, res) => {
+    try {
+        const doctors = await doctorModel.find({}).select("-password");
+        res.json({ success: true, doctors });
+    } catch (error) {
+        console.log(error);
+        res.json({ message: error.message, success: false });
+    }
+}
+
+export { addDoctor, loginAdmin, allDoctors };
