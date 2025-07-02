@@ -119,7 +119,7 @@ const Navbar = () => {
             <>
               <hr className='w-full border-t my-2' />
               <p onClick={() => { navigate('/profile'); setShowMenu(false); }} className='px-6 py-3 w-full text-center hover:bg-primary hover:text-white cursor-pointer'>My Profile</p>
-              <p onClick={() => { navigate('/appointment'); setShowMenu(false); }} className='px-6 py-3 w-full text-center hover:bg-primary hover:text-white cursor-pointer'>Appointments</p>
+              <p onClick={() => { navigate('/my-appointments'); setShowMenu(false); }} className='px-6 py-3 w-full text-center hover:bg-primary hover:text-white cursor-pointer'>My Appointments</p>
               <p onClick={() => { setToken(false); setShowMenu(false); }} className='px-6 py-3 w-full text-center hover:bg-primary hover:text-white cursor-pointer'>Logout</p>
             </>
           ) : (

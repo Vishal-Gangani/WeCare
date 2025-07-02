@@ -47,7 +47,7 @@ export const AppContextProvider = (props) => {
         }
     };
 
-    const value = {doctors, token, setToken, backendUrl, userData, setUserData, loadUserProfileData};
+    const value = {doctors, token, setToken, backendUrl, userData, setUserData, loadUserProfileData, getDoctorsData};
 
     useEffect(() => {
         getDoctorsData();

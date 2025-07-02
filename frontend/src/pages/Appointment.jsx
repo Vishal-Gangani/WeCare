@@ -6,10 +6,13 @@ import { useEffect } from 'react';
 import { AppContext } from '../context/AppContext';
 import { assets } from '../assets/assets_frontend/assets.js';
 import RelatedDoctors from '../components/RelatedDoctors.jsx';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Appointment = () => {
   const { docId } = useParams();
-  const { doctors } = useContext(AppContext);
+  const { doctors, backendUrl, token, getDoctorsData } = useContext(AppContext);
 
   const [docInfo, setDocInfo] = useState(null);
   const [docSlots, setDocSlots] = useState([]);
@@ -17,12 +20,15 @@ const Appointment = () => {
   const [slotTime, setSlotTime] = useState('');
   const DaysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
+  const navigate = useNavigate();
+
   const fetchDocInfo = async () => {
     const docInfo = doctors.find(doc => doc._id === docId);
     setDocInfo(docInfo);
   }
 
   const getAvailableSlots = async () => {
+    if (!docInfo) return;
     let slotsArr = [];
     let today = new Date();
     for (let i = 0; i < 7; i++) {
@@ -33,29 +39,69 @@ const Appointment = () => {
       endTime.setHours(21, 0, 0, 0);
 
       if (i === 0) {
-        // For today, start at least 1 hour from now, rounded up to next 30-min mark, but not before 10:00
-        let now = new Date();
-        let minStart = new Date(now.getTime() + 60 * 60 * 1000);
-        minStart.setSeconds(0, 0);
-        let minutes = minStart.getMinutes();
-        minStart.setMinutes(minutes < 30 ? 30 : 0);
-        if (minStart.getHours() < 10) {
-          minStart.setHours(10, 0, 0, 0);
-        }
-        currentDate = minStart;
+        // For today, start at 10:00 AM
+        currentDate.setHours(10, 0, 0, 0);
       } else {
         currentDate.setHours(10, 0, 0, 0);
       }
 
       let timeslots = [];
+      const now = new Date();
       while (currentDate < endTime) {
-        let formattedTime = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        timeslots.push({ datetime: new Date(currentDate), time: formattedTime });
+        const day = currentDate.getDate();
+        const month = currentDate.getMonth() + 1; // Months are zero-based
+        const year = currentDate.getFullYear();
+        const slotDate = day + '-' + month + '-' + year;
+        const slotTime = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const isSlotAvailable = !(docInfo.slots_booked[slotDate] && docInfo.slots_booked[slotDate].includes(slotTime));
+        if (
+          isSlotAvailable &&
+          (i !== 0 || currentDate > now)
+        ) {
+          let formattedTime = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          timeslots.push({ datetime: new Date(currentDate), time: formattedTime });
+        }
         currentDate.setMinutes(currentDate.getMinutes() + 30);
       }
-      slotsArr.push(timeslots);
+      if (timeslots.length > 0) {
+        slotsArr.push(timeslots);
+      }
     }
     setDocSlots(slotsArr);
+  }
+
+  const bookAppointment = async () => {
+    if (!token) {
+      toast.warn('Please login to book an appointment');
+      return navigate('/login');
+    }
+
+    try {
+
+      const date = docSlots[slotIndex][0].datetime;
+      
+      let day = date.getDate();
+      let month = date.getMonth() + 1; // Months are zero-based
+      let year = date.getFullYear();
+
+      const slotDate = day + '-' + month + '-' + year;
+
+      const { data } = await axios.post(`${backendUrl}api/user/book-appointment`, { docId, slotDate, slotTime }, {headers: {token}});
+
+      if (data.success) {
+        toast.success(data.message);
+        getDoctorsData();
+        navigate('/appointment');
+      }
+      else{
+        toast.error(data.message);
+        console.error(data.message);
+      }
+
+    } catch (error) {
+      console.error(error);
+      toast.error(error.message);
+    }
   }
 
   useEffect(() => {
@@ -111,7 +157,7 @@ const Appointment = () => {
             ))
           }
         </div>
-        <button className='bg-primary text-white px-14 py-4 rounded-full my-6 font-light'>Book an Appointment</button>
+        <button onClick={bookAppointment} className='bg-primary text-white px-14 py-4 rounded-full my-6 font-light'>Book an Appointment</button>
       </div>
 
       <RelatedDoctors docId={docId} speciality={docInfo.speciality} />
