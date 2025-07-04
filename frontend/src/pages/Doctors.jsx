@@ -14,7 +14,7 @@ const Doctors = () => {
 
   const applyFilter = () => {
     if (speciality) {
-      setFilteredDoctors(doctors.filter(doctor => doctor.speciality === speciality));
+      setFilteredDoctors(doctors.filter(doctor => doctor.speciality.toLowerCase() === speciality.toLowerCase()));
     }
     else{
       setFilteredDoctors(doctors);

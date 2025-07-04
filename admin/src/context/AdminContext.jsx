@@ -9,6 +9,8 @@ const AdminContextProvider = (props) => {
 
     const [aToken, setAToken] = React.useState(localStorage.getItem('aToken')? localStorage.getItem('aToken') : null);
     const [doctors, setDoctors] = useState([]);
+    const [appointments, setAppointments] = useState([]);
+    const [dashData, setDashData] = useState(false);
 
     const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000/';
 
@@ -44,13 +46,73 @@ const AdminContextProvider = (props) => {
         }
     };
 
+    //get all appointments
+
+    const getAllAppointments = async () => {
+        try {
+          const {data}= await axios.get(`${backendUrl}api/admin/appointments`, { headers: { aToken } });
+
+          if( data.success ) {
+            setAppointments(data.appointments);
+            console.log(data.appointments);
+          } else {
+            toast.error(data.message || "Failed to fetch appointments");
+          }
+
+        }catch (error) {
+            toast.error(error.message);
+        }
+    };
+
+    const cancelAppointment = async (appointmentId) => {
+      try{
+        const url = backendUrl.endsWith('/') ? `${backendUrl}api/admin/cancel-appointment` : `${backendUrl}/api/admin/cancel-appointment`;
+        console.log('Cancelling appointment:', appointmentId, 'with URL:', url, 'and token:', aToken);
+        const {data} = await axios.post(url, {appointmentId}, { headers: { aToken } });
+        console.log('Cancel appointment response:', data);
+        if(data.success){
+          toast.success(data.message);
+          getAllAppointments();
+        }
+        else{
+          toast.error(data.message || "Failed to cancel appointment");
+        }
+
+      } catch (error){
+        toast.error(error.message);
+        console.error('Cancel appointment error:', error);
+      }
+    };
+
+    const getDashData = async () => {
+      try{
+
+        const {data} = await axios.get(`${backendUrl}api/admin/dashboard`, { headers: { aToken } });
+        if(data.success){
+          setDashData(data.dashData);
+          console.log(data.dashData);
+        } else {
+          toast.error(data.message || "Failed to fetch dashboard data");
+        }
+
+      } catch (error) {
+        toast.error(error.message);
+      }
+    };
+
   const value = {
     aToken,
     setAToken,
     doctors,
     getAllDoctors,
     backendUrl,
-    changeAvailability
+    changeAvailability,
+    appointments,
+    setAppointments,
+    getAllAppointments,
+    cancelAppointment,
+    getDashData,
+    dashData
   };
 
   return (
