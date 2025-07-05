@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useState } from 'react'
 import { AppContext } from '../context/AppContext'
-import { useNavigate } from 'react-router-dom'  
+import { useNavigate } from 'react-router-dom'
 
 const Doctors = () => {
   const { speciality } = useParams()
@@ -16,14 +16,14 @@ const Doctors = () => {
     if (speciality) {
       setFilteredDoctors(doctors.filter(doctor => doctor.speciality.toLowerCase() === speciality.toLowerCase()));
     }
-    else{
+    else {
       setFilteredDoctors(doctors);
     }
   }
 
   useEffect(() => {
     applyFilter();
-  } , [doctors, speciality]);
+  }, [doctors, speciality]);
 
   return (
     <div>
@@ -45,9 +45,9 @@ const Doctors = () => {
                 <div className='bg-green-50 flex flex-col justify-end items-center h-44 p-0'>
                   <img className='w-full h-full object-contain' src={item.image} alt={item.name} />
                 </div>
-                <div className='flex items-center  gap-2 text-sm text-center text-green-500 px-4 pt-2'>
-                  <p className='w-2 h-2 bg-green-500 rounded-full'></p>
-                  <p>Available</p>
+                <div className='flex items-center  gap-2 text-sm text-center px-4 pt-2'>
+                  <p className={`w-2 h-2 ${item.available ? 'bg-green-500' : 'bg-red-500'} rounded-full`}></p>
+                  <p className={`${item.available ? 'text-green-500' : 'text-red-500'} rounded-full`}>{item.available ? 'Available' : 'Unavailable'}</p>
                 </div>
                 <div className='px-4 pb-4'>
                   <p className='font-medium text-grey-900 text-lg'>{item.name}</p>
