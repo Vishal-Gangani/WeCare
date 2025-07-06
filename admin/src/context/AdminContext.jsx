@@ -12,7 +12,7 @@ const AdminContextProvider = (props) => {
     const [appointments, setAppointments] = useState([]);
     const [dashData, setDashData] = useState(false);
 
-    const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000/';
+    const backendUrl = import.meta.env.VITE_BACKEND_URL || 'https://wecare-backend-7dbz.onrender.com/';
 
     const getAllDoctors = async () => {
         try {
