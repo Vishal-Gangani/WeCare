@@ -16,8 +16,7 @@ const AdminContextProvider = (props) => {
 
     const getAllDoctors = async () => {
         try {
-            const url = backendUrl.endsWith('/') ? `${backendUrl}api/admin/all-doctors` : `${backendUrl}/api/admin/all-doctors`;
-            const {data} = await axios.get(url, { headers: { aToken } });
+            const {data} = await axios.get(`${backendUrl}api/admin/all-doctors`, { headers: { aToken } });
             if (data.success) {
                 setDoctors(data.doctors);
                 console.log(data.doctors);
@@ -66,9 +65,8 @@ const AdminContextProvider = (props) => {
 
     const cancelAppointment = async (appointmentId) => {
       try{
-        const url = backendUrl.endsWith('/') ? `${backendUrl}api/admin/cancel-appointment` : `${backendUrl}/api/admin/cancel-appointment`;
-        console.log('Cancelling appointment:', appointmentId, 'with URL:', url, 'and token:', aToken);
-        const {data} = await axios.post(url, {appointmentId}, { headers: { aToken } });
+        console.log('Cancelling appointment:', appointmentId, 'with URL:', `${backendUrl}api/admin/cancel-appointment`, 'and token:', aToken);
+        const {data} = await axios.post(`${backendUrl}api/admin/cancel-appointment`, {appointmentId}, { headers: { aToken } });
         console.log('Cancel appointment response:', data);
         if(data.success){
           toast.success(data.message);

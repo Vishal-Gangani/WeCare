@@ -20,8 +20,7 @@ const Login = () => {
 
         try{
             if(state === 'Admin'){
-                const url = `${backendUrl.endsWith('/') ? backendUrl : backendUrl + '/'}api/admin/login`;
-                const {data} = await axios.post(url, {
+                const {data} = await axios.post(`${backendUrl}api/admin/login`, {
                     email,
                     password
                 });
@@ -33,7 +32,7 @@ const Login = () => {
                 }
             }
             else{
-                const {data} = await axios.post(`${backendUrl.endsWith('/') ? backendUrl : backendUrl + '/'}api/doctor/login`, {email, password});
+                const {data} = await axios.post(`${backendUrl}api/doctor/login`, {email, password});
                 if(data.success){
                     localStorage.setItem('dToken', data.token);
                     setDToken(data.token);

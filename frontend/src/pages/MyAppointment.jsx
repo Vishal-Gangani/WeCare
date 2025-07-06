@@ -7,12 +7,7 @@ import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
-// Helper to join base URL and endpoint safely
-function joinUrl(base, endpoint) {
-  if (base.endsWith('/')) base = base.slice(0, -1);
-  if (endpoint.startsWith('/')) endpoint = endpoint.slice(1);
-  return `${base}/${endpoint}`;
-}
+
 
 const MyAppointment = () => {
 
@@ -24,7 +19,7 @@ const MyAppointment = () => {
 
   const getUserAppointments = async () => {
     try {
-      const { data } = await axios.get(joinUrl(backendUrl, '/api/user/appointments'), {
+      const { data } = await axios.get(`${backendUrl}api/user/appointments`, {
         headers: {
           token
         }
@@ -45,7 +40,7 @@ const MyAppointment = () => {
   const cancelAppointment = async (appointmentId) => {
     try {
 
-      const { data } = await axios.post(joinUrl(backendUrl, '/api/user/cancel-appointment'), {
+      const { data } = await axios.post(`${backendUrl}api/user/cancel-appointment`, {
         appointmentId
       }, {
         headers: {
@@ -95,7 +90,7 @@ const MyAppointment = () => {
       handler: async (response) => {
         console.log('Payment successful:', response);
         try {
-          const { data } = await axios.post(joinUrl(backendUrl, '/api/user/verify-razorpay'), response, { headers: { token } });
+          const { data } = await axios.post(`${backendUrl}api/user/verify-razorpay`, response, { headers: { token } });
           if (data.success) {
             getUserAppointments();
             navigate('/appointment');
@@ -118,7 +113,7 @@ const MyAppointment = () => {
   //payment online
   const appointmentRazorpay = async (appointmentId) => {
     try {
-      const { data } = await axios.post(joinUrl(backendUrl, '/api/user/payment-razorpay'), {
+      const { data } = await axios.post(`${backendUrl}api/user/payment-razorpay`, {
         appointmentId
       }, {
         headers: {

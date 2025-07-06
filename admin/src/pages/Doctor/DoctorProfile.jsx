@@ -11,7 +11,7 @@ const DoctorProfile = () => {
 
   const { dToken, profileData, getProfileData, setProfileData } = useContext(DoctorContext);
   const { backendUrl } = useContext(AppContext);
-  const baseUrl = backendUrl || 'https://wecare-backend-7dbz.onrender.com';
+  const baseUrl = backendUrl || 'https://wecare-backend-7dbz.onrender.com/';
 
   const [isEdit, setIsEdit] = useState(false);
 
@@ -23,8 +23,7 @@ const DoctorProfile = () => {
         available: profileData.available
       }
 
-      const url = baseUrl.endsWith('/') ? `${baseUrl}api/doctor/update-profile` : `${baseUrl}/api/doctor/update-profile`;
-      const {data} = await axios.post(url, updateData, {headers: {dToken}});
+      const {data} = await axios.post(`${baseUrl}api/doctor/update-profile`, updateData, {headers: {dToken}});
 
       if (data.success) {
         toast.success(data.message);

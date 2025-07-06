@@ -44,7 +44,7 @@ const AddDoctor = () => {
             //console log formdata
             formData.forEach((value, key) =>{ console.log(`${key}, ${value}`);});
 
-            const {data} = await axios.post(backendUrl + 'api/admin/add-doctor', formData, {
+            const {data} = await axios.post(`${backendUrl}api/admin/add-doctor`, formData, {
                 headers: { aToken }
             });
 

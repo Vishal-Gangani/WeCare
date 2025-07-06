@@ -11,8 +11,15 @@ import userRouter from './routes/userRoute.js';
 //app configuration
 const app = express();
 const PORT = process.env.PORT || 5000;
-connectDB();
-connectCloudinary();
+
+// Initialize database and cloudinary with error handling
+try {
+  connectDB();
+  connectCloudinary();
+} catch (error) {
+  console.error('❌ Failed to initialize services:', error.message);
+  // Continue with server startup even if these fail
+}
 
 //middleware
 app.use(express.json());
