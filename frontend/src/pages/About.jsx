@@ -9,7 +9,9 @@ const About = () => {
         <p>ABOUT <span className='text-gray-700 font-semibold'>US</span></p>
       </div>
       <div className='my-10 flex flex-col md:flex-row gap-6 md:gap-12'>
-        <img className='w-full max-w-xs md:max-w-[400px] rounded-xl shadow-lg mx-auto md:mx-0' src={assets.about_image} alt="About Us" />
+        <div className="w-full max-w-xs md:max-w-[400px] aspect-[4/3] mx-auto md:mx-0 flex-shrink-0">
+          <img className='w-full h-full object-cover rounded-xl shadow-lg' src={assets.about_image} alt="About Us" />
+        </div>
         <div className='flex flex-col justify-center gap-6 md:gap-8 md:w-2/4 text-gray-800 text-base bg-white p-4 md:p-8 rounded-xl shadow-md'>
           <p className='text-lg font-semibold'>Welcome to WeCare, your trusted healthcare platform that connects patients with qualified medical professionals. We understand that finding the right healthcare provider can be challenging, which is why we've created a seamless online experience for all your medical needs.</p>
           <p className='text-base'>We are dedicated to providing the best care for you and your loved ones through our network of experienced doctors across various specialties including General Physicians, Dermatologists, Pediatricians, Gynecologists, Neurologists, and Gastroenterologists. Our platform makes it easy to find the right doctor and book appointments at your convenience.</p>

@@ -262,7 +262,7 @@ const paymentRazorpay = async (req, res) => {
     }
 
     const options = {
-      amount: appointmentData.amount ,  // amount in the smallest currency unit
+      amount: appointmentData.amount * 100,  // convert rupees to paise
       currency: process.env.CURRENCY,
       receipt: appointmentId,
     };

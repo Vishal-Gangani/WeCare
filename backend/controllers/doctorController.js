@@ -5,10 +5,15 @@ import appointmentModel from '../models/appointmentModel.js';
 
 const changeAvailability = async (req, res) => {
     try {
-        const docId = req.docId;
+        const docId = req.docId || req.body.docId;
 
         // Find the doctor by ID and update their availability
         const docData = await doctorModel.findById(docId);
+        
+        if (!docData) {
+            return res.json({ success: false, message: "Doctor not found" });
+        }
+
         await doctorModel.findByIdAndUpdate(docId, {
             available: !docData.available
         });
