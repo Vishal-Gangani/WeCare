@@ -6,6 +6,7 @@ import connectCloudinary from './config/cloudinary.js';
 import adminRouter from './routes/adminRoute.js';
 import doctorRouter from './routes/doctorRoute.js';
 import userRouter from './routes/userRoute.js';
+import http from 'http';
 
 
 //app configuration
@@ -40,7 +41,10 @@ app.get('/', (req, res) => {
   res.send('Welcome to WeCare API .........');
 });
 
-
-app.listen(PORT, () => {
+// Create HTTP server and set timeouts
+const server = http.createServer(app);
+server.keepAliveTimeout = 120000;
+server.headersTimeout = 120000;
+server.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running on port ${PORT}`);
 });
