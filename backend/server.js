@@ -11,7 +11,7 @@ import http from 'http';
 
 //app configuration
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 10000;
 
 console.log('Render-assigned PORT:', process.env.PORT);
 
