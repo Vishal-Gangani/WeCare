@@ -13,6 +13,8 @@ import http from 'http';
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+console.log('Render-assigned PORT:', process.env.PORT);
+
 // Initialize database and cloudinary with error handling
 try {
   connectDB();
