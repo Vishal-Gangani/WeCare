@@ -23,7 +23,10 @@ try {
 
 //middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: 'https://wecare-frontend.onrender.com',
+  credentials: true // set to true if you use cookies or authentication
+}));
 
 //api endpoints
 app.use('/api/admin', adminRouter);
