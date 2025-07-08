@@ -37,7 +37,7 @@ app.use('/api/doctor', doctorRouter);
 app.use('/api/user', userRouter);
 
 
-//https://wecare-backend-7dbz.onrender.com/api/admin/add-doctor
+//https://wecare-backend-v4yh.onrender.com/api/admin/add-doctor
 
 app.get('/', (req, res) => {
   res.send('Welcome to WeCare API .........');

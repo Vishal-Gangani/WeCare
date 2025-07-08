@@ -11,7 +11,7 @@ const DoctorProfile = () => {
 
   const { dToken, profileData, getProfileData, setProfileData } = useContext(DoctorContext);
   const { backendUrl } = useContext(AppContext);
-  const baseUrl = backendUrl || 'https://wecare-backend-7dbz.onrender.com/';
+  const baseUrl = backendUrl || 'https://wecare-backend-v4yh.onrender.com/';
 
   const [isEdit, setIsEdit] = useState(false);
 
